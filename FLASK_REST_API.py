@@ -87,27 +87,27 @@ def upload_file():
 
         elif file_name[1] == 'csv':
             metadata_csv={}
+            fileString = file.read().decode('utf-8')
+            datafile = [{k: v for k, v in row.items()} for row in csv.DictReader(fileString.splitlines(), skipinitialspace=True)]
             metadata_csv['file name']=file_name[0]
             metadata_csv['file type']=file_name[1]
             file.seek(0, os.SEEK_END)
             file_length = file.tell()
             metadata_csv['file size']= file_length
-            fileString = file.read().decode('utf-8')
-            datafile = [{k: v for k, v in row.items()} for row in csv.DictReader(fileString.splitlines(), skipinitialspace=True)]
             output['File Data']= datafile
             output['File MetaData'] = metadata_csv
             return jsonify(output)
 
         elif file_name[1]=='png':
             metadata_png={}
-            file.seek(0, os.SEEK_END)
-            file_length = file.tell()
+            encoded_string = base64.b64encode(file.read())
+            encoded_string = encoded_string.decode('utf-8')
             metadata_png['file name']=file_name[0]
+            file.seek(0,os.SEEK_END)
+            file_length = file.tell()
             metadata_png['file type']=file_name[1]
             metadata_png['file size']= file_length          
-            #data_img = base64.encodebytes(file.read().decode('utf-8'))
-            #image_string = base64.b64encode(file.read().decode('utf-8'))
-            encoded_string = base64.b64encode(file.read().decode('utf-8'))
+            #encoded_string = base64.b64encode(file.read().decode('utf-8'))
             output['File data']=encoded_string
             output['File Metadata']=metadata_png
             return jsonify(output)
@@ -120,5 +120,5 @@ def upload_file():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8791)
+    app.run(debug=True, port=443, host="0.0.0.0")
 
