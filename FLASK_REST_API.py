@@ -73,23 +73,24 @@ def upload_file():
         if file_name[1] == 'txt':
             metadata_txt = {}
             data_txt={}
-            file.seek(0, os.SEEK_END)
-            file_length = file.tell()
-            metadata_txt['file name']=file_name[0]
-            metadata_txt['file size']=file_length
-            metadata_txt['file type']=file_name[1]
             file_tmp = request.files['file'].read()
             file_tmp = file_tmp.decode("utf8")
+            metadata_txt['file name']=file_name[0]
+            file.seek(0, os.SEEK_END)
+            file_length = file.tell()
+            metadata_txt['file size']=file_length
+            metadata_txt['file type']=file_name[1]
+            
             output['File Data']= file_tmp
             output['File MetaData'] = metadata_txt
             return jsonify(output)
 
         elif file_name[1] == 'csv':
             metadata_csv={}
-            file.seek(0, os.SEEK_END)
-            file_length = file.tell()
             metadata_csv['file name']=file_name[0]
             metadata_csv['file type']=file_name[1]
+            file.seek(0, os.SEEK_END)
+            file_length = file.tell()
             metadata_csv['file size']= file_length
             fileString = file.read().decode('utf-8')
             datafile = [{k: v for k, v in row.items()} for row in csv.DictReader(fileString.splitlines(), skipinitialspace=True)]
@@ -106,8 +107,7 @@ def upload_file():
             metadata_png['file size']= file_length          
             #data_img = base64.encodebytes(file.read().decode('utf-8'))
             #image_string = base64.b64encode(file.read().decode('utf-8'))
-            encoded_string = base64.b64encode(file.read())
-            encoded_string= print(encoded_string.decode('utf-8'))
+            encoded_string = base64.b64encode(file.read().decode('utf-8'))
             output['File data']=encoded_string
             output['File Metadata']=metadata_png
             return jsonify(output)
