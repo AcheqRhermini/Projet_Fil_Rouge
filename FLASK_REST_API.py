@@ -16,7 +16,7 @@ def allowed_file(filename):
 
 output={}
 app = Flask(__name__)
-app.config["SWAGGER"] = {"title": "Swagger-UI", "uiversion": 2}
+app.config["SWAGGER"] = {"title": "Swagger-UI", "uiversion": 3}
 
 swagger_config = {
     "headers": [],
@@ -31,7 +31,7 @@ swagger_config = {
     "static_url_path": "/flasgger_static",
     # "static_folder": "static",  # must be set by user
     "swagger_ui": True,
-    "specs_route": "/api_rest_swagger/",
+    "specs_route": "/swagger/",
 }
 
 template = dict(
@@ -49,7 +49,7 @@ def index():
     return "MetaData & Data API"
 
 
-@app.route("/MetaData-file-API", methods=["POST"])
+@app.route("/Meta_Data_API", methods=["POST"])
 @swag_from("swagger_Rest_API_config.yml")
 def upload_file():
     # check if the post request has the file part
@@ -121,4 +121,5 @@ def upload_file():
 
 if __name__ == "__main__":
     app.run(debug=True, port=443, host="0.0.0.0")
+    
 
