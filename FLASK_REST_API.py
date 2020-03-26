@@ -9,7 +9,7 @@ from flask import render_template, request, redirect, url_for
 import os
 import csv
 import base64
-ALLOWED_EXTENSIONS = {'txt', 'png', 'jpg', 'csv'}
+ALLOWED_EXTENSIONS = {'txt', 'png', 'csv'}
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
